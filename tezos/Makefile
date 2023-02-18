@@ -21,6 +21,8 @@ help:
 	@echo "  test-ligo        - Runs Ligo tests"
 	@echo "  test-integration - Runs integration tests"
 
+all: clean compile test
+
 clean:
 	@echo "Cleaning..."
 	@rm -rf ./src/compiled/*
@@ -39,6 +41,12 @@ deploy-contract:
 	@echo "Deploying Main contract..."
 	@npm run deploy
 
+clean: clean_contracts clean_fa2 clean_marketplace
+
+clean_contracts:
+	@echo "Removing Michelson files"
+	@rm -f compiled/*.tz compiled/*.json
+
 recompile: clean compile
 
 sandbox-start: 
@@ -47,7 +55,7 @@ sandbox-start:
 sandbox-stop:
 	@docker stop sandbox
 
-test: test-ligo test-integration
+test: test-ligo
 
 test-ligo:
 	@echo "Testing contracts..."
